@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '00 17 22 * *'  # 北京时间 00:00 (UTC+8)，对应UTC时间 16:00
+    - cron: '00 16 * * *'  # 北京时间 00:00 (UTC+8)，对应UTC时间 16:00
   workflow_dispatch:
 
 permissions:
@@ -29,6 +29,12 @@ jobs:
         run: |
           pip install curl_cffi requests
 
+      - name: Random delay (0-6 hours)
+        run: |
+          delay=$(( RANDOM % 18888 ))
+          echo "Random delay: $delay seconds (≈ $((delay/3600)) hours)"
+          sleep $delay
+          
       - name: 运行签到脚本
         env:
           # 基本账号
